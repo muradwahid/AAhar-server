@@ -9,4 +9,36 @@ app.get("/", (req, res) => {
   res.send("server is running");
 });
 async function run() {
+  try {
+    const uri =
+      "mongodb+srv://assignmentTen:assignmentTen@cluster0.wk12kvv.mongodb.net/?retryWrites=true&w=majority";
+    const client = new MongoClient(uri, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      serverApi: ServerApiVersion.v1,
+    });
 
+    
+      const cursor = reviewCollection.find(query);
+      const review = await cursor.toArray();
+      res.send(review);
+    })
+      app.post('/review', async(req, res) => {
+          const data = req.body;
+          const result=await reviewCollection.insertOne(data)
+          res.send(result)
+      })
+    app.delete('/myreview/:id',async(req, res) => {
+      const id = req.params.id;
+      const query = { _id: ObjectId(id) };
+      const result = await reviewCollection.deleteOne(query);
+      res.send(result);
+    })
+  } finally {
+  }
+}
+run().catch((err) => console.log(err));
+
+app.listen(port, () => {
+  console.log(port);
+});
