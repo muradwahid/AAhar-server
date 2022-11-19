@@ -27,12 +27,13 @@ async function run() {
       const foods = await cursor.limit(3).toArray();
       res.send(foods);
     });
-    
-          app.post("/services", async (req, res) => {
-            const data = req.body;
-            const result = await foodsCollection.insertOne(data);
-            res.send(result);
-          });
+    app.get("/services", async (req, res) => {
+      const query = {};
+      const cursor = foodsCollection.find(query);
+      const foods = await cursor.toArray();
+      res.send(foods);
+    });
+          
 
 
     app.get("/foods/:id", async (req, res) => {
