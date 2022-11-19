@@ -10,8 +10,7 @@ app.get("/", (req, res) => {
 });
 async function run() {
   try {
-    const uri =
-      "mongodb+srv://assignmentTen:assignmentTen@cluster0.wk12kvv.mongodb.net/?retryWrites=true&w=majority";
+    const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.wk12kvv.mongodb.net/?retryWrites=true&w=majority`;
     const client = new MongoClient(uri, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
@@ -67,7 +66,12 @@ async function run() {
           const result=await reviewCollection.insertOne(data)
           res.send(result)
       })
-
+    app.delete('/myreview/:id',async(req, res) => {
+      const id = req.params.id;
+      const query = { _id: ObjectId(id) };
+      const result = await reviewCollection.deleteOne(query);
+      res.send(result);
+    })
   } finally {
   }
 }
