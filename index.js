@@ -33,15 +33,12 @@ async function run() {
       const foods = await cursor.toArray();
       res.send(foods);
     });
-          
+          app.post("/services", async (req, res) => {
+            const data = req.body;
+            const result = await foodsCollection.insertOne(data);
+            res.send(result);
+          });
 
-
-    app.get("/foods/:id", async (req, res) => {
-      const id = req.params.id;
-      const query = { _id: ObjectId(id) };
-      const food = await foodsCollection.findOne(query);
-      res.send(food);
-    });
     //   review
       app.get('/review', async (req, res) => {
           const query = {};
